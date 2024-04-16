@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             insertDataGroup = new GroupBox();
             populationInput = new TextBox();
             totalInput = new TextBox();
@@ -55,9 +56,11 @@
             saveButton = new Button();
             cleanSelectionButton = new Button();
             infoComarcas = new DataGridView();
+            errorProvider1 = new ErrorProvider(components);
             insertDataGroup.SuspendLayout();
             statsGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)infoComarcas).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
             // 
             // insertDataGroup
@@ -336,6 +339,10 @@
             infoComarcas.TabIndex = 4;
             infoComarcas.CellContentClick += infoComarcas_CellContentClick;
             // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -354,6 +361,7 @@
             statsGroup.ResumeLayout(false);
             statsGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)infoComarcas).EndInit();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
         }
 
@@ -387,5 +395,6 @@
         private Label populationBiggerThanInfo;
         private DataGridView infoComarcas;
         private TextBox populationInput;
+        private ErrorProvider errorProvider1;
     }
 }

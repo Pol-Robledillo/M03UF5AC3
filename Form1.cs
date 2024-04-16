@@ -81,7 +81,80 @@ namespace M03UF5AC3
             string ecoActivities = ecoActivitiesInput.Text;
             string total = totalInput.Text;
             string consDom = consDomInput.Text;
-            if (RunValidations(year, region, population, domNet, ecoActivities, total, consDom))
+            bool allCorrect = true;
+            Regex regexNums = new Regex(@"^\d+$");
+            Regex regexDecimals = new Regex(@"^\d+(\,\d+)?$");
+
+            if (year == -1)
+            {
+                errorProvider1.SetError(yearSelector, "Any no pot estar buit");
+                MessageBox.Show("Any no pot estar buit", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                allCorrect = false;
+            } else
+            {
+                errorProvider1.SetError(yearSelector, "");
+            }
+            if (region == "")
+            {
+                errorProvider1.SetError(regionSelector, "Comarca no pot estar buida");
+                MessageBox.Show("Comarca no pot estar buida", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                allCorrect = false;
+            }
+            else
+            {
+                errorProvider1.SetError(regionSelector, "");
+            }
+            if (!regexNums.IsMatch(population))
+            {
+                errorProvider1.SetError(populationInput, "Poblacio ha de ser un nombre enter");
+                MessageBox.Show("Poblacio ha de ser un nombre enter", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                allCorrect = false;
+            }
+            else
+            {
+                errorProvider1.SetError(populationInput, "");
+            }
+            if (!regexNums.IsMatch(domNet))
+            {
+                errorProvider1.SetError(domNetInput, "DomesticXarxa ha de ser un nombre enter");
+                MessageBox.Show("Domestic Xarxa ha de ser un nombre enter", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                allCorrect = false;
+            }
+            else
+            {
+                errorProvider1.SetError(domNetInput, "");
+            }
+            if (!regexNums.IsMatch(ecoActivities))
+            {
+                errorProvider1.SetError(ecoActivitiesInput, "ActivitatsEconomiques ha de ser un nombre enter");
+                MessageBox.Show("Activitats Economiques ha de ser un nombre enter", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                allCorrect = false;
+            }
+            else
+            {
+                errorProvider1.SetError(ecoActivitiesInput, "");
+            }
+            if (!regexNums.IsMatch(total))
+            {
+                errorProvider1.SetError(totalInput, "Total ha de ser un nombre enter");
+                MessageBox.Show("Total ha de ser un nombre enter", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                allCorrect = false;
+            }
+            else
+            {
+                errorProvider1.SetError(totalInput, "");
+            }
+            if (!regexDecimals.IsMatch(consDom))
+            {
+                errorProvider1.SetError(consDomInput, "ConsumDomesticPerCapita ha de ser un nombre decimal");
+                MessageBox.Show("Consum Domestic Per Capita ha de ser un nombre decimal", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                allCorrect = false;
+            }
+            else
+            {
+                errorProvider1.SetError(consDomInput, "");
+            }
+            if (allCorrect)
             {
                 Consum consum = new Consum
                 {
@@ -100,47 +173,6 @@ namespace M03UF5AC3
             }
 
         }
-        private bool RunValidations(int year, string region, string population, string domNet, string ecoActivities, string total, string consDom)
-        {
-            Regex regexNums = new Regex(@"^\d+$");
-            Regex regexDecimals = new Regex(@"^\d+(\,\d+)?$");
-            if (year == -1)
-            {
-                MessageBox.Show("Any no pot estar buit");
-                return false;
-            }
-            if (region == "")
-            {
-                MessageBox.Show("Comarca no pot estar buida");
-                return false;
-            }
-            if (!regexNums.IsMatch(population))
-            {
-                MessageBox.Show("Poblacio ha de ser un nombre enter");
-                return false;
-            }
-            if (!regexNums.IsMatch(domNet))
-            {
-                MessageBox.Show("DomesticXarxa ha de ser un nombre enter");
-                return false;
-            }
-            if (!regexNums.IsMatch(ecoActivities))
-            {
-                MessageBox.Show("ActivitatsEconomiques ha de ser un nombre enter");
-                return false;
-            }
-            if (!regexNums.IsMatch(total))
-            {
-                MessageBox.Show("Total ha de ser un nombre enter");
-                return false;
-            }
-            if (!regexDecimals.IsMatch(consDom))
-            {
-                MessageBox.Show("ConsumDomesticPerCapita ha de ser un nombre decimal");
-                return false;
-            }
-            return true;
-        }
 
         private void infoComarcas_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -158,7 +190,7 @@ namespace M03UF5AC3
 
                 double domesticXarxa = double.Parse(row.Cells["DomesticXarxa"].Value.ToString());
                 double average = poblacion != 0 ? domesticXarxa / poblacion : 0;
-                avgDomConsInfo.Text = average.ToString();
+                avgDomConsInfo.Text = average.ToString("0,00");
 
                 double consumPerCapita = double.Parse(row.Cells["ConsumDomesticPerCapita"].Value.ToString());
                 highestDomConsInfo.Text = Helper.IsHighestDomCons(consumPerCapita) ? "Sí" : "No";
